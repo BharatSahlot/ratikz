@@ -1,9 +1,5 @@
 #lang racket
 
-(require "../src/style.rkt")
-(require "../src/connectors.rkt")
-(require "../src/commands.rkt")
-(require "../src/point.rkt")
 (require "../src/ratikz.rkt")
 
 (define (unzip lst)
