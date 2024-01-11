@@ -34,7 +34,8 @@
                 [text #false]
                 [node-style #false]
                 [children '()]
-                [edge-label #false])
+                [edge-label #false]
+                [edge-style #false])
     (define/public (render-children level)
       (let ([lst (map (lambda (a)
                         (send a render (+ level 1))) children)])
@@ -50,6 +51,9 @@
         text
         (render-children (+ level 1))
         (if (boolean? edge-label) ""
-          (format "\nedge from parent node {~a}" edge-label))))))
+          (format "\n~aedge from parent node~a {~a}"
+                  (make-string (+ level 1) #\tab)
+                  (if (boolean? edge-style) "" (send edge-style render))
+                  edge-label))))))
 
 (provide tree-root% tree-node%)

@@ -62,15 +62,15 @@
       ['eq? '=]
       [_ error "unknown op"])))
 
-(define (unparse exp is-root? edge-label)
+(define (unparse exp is-root? edge-label level)
   (let ([children
           (cases ast exp
                  (binop (op l r)
-                        (list (unparse l #f #f) (unparse r #f #f)))
+                        (list (unparse l #f #f (+ level 1)) (unparse r #f #f (+ level 1))))
                  (ifte (c t e)
-                       (list (unparse c #f "test")
-                             (unparse t #f "then")
-                             (unparse e #f "else")))
+                       (list (unparse c #f "test" (+ level 1))
+                             (unparse t #f "then" (+ level 1))
+                             (unparse e #f "else" (+ level 1))))
                  (num (n) '())
                  (bool (b) '()))])
     (if is-root?
@@ -79,10 +79,19 @@
            (style (new style%))
            (text (get-string exp))
            (children children))
-      (new tree-node%
+      (new tree-node% ;; depending on the context style properties can be easily set
            (text (get-string exp))
            (children children)
-           (edge-label edge-label)))))
+           (style (new style% (sibling-distance (/ 150.0 level))))
+           (edge-label edge-label)
+           (edge-style (new style% 
+                            (text-color (if (eq? edge-label "test") "green!50" "blue!50"))
+                            (fill "white")
+                            (font "\\tiny")))))))
+
+;; INFO: this creates a very overlapping ast, tikz does not handle that by itself
+;; (display
+;;   (tikz (unparse (parse '(if (== 8 (if (== 6 (* 2 3)) 3 5)) (* 10 (if (== 6 (* 2 3)) 3 5)) 20)) #t #f)))
 
 (display
-  (tikz (unparse (parse '(if (== 8 5) (* 10 (if (== 6 (* 2 3)) 3 5)) 20)) #t #f)))
+  (tikz (unparse (parse '(if (== 8 4) (* 10 (if (== 6 (* 2 3)) 3 5)) 20)) #t #f 1)))

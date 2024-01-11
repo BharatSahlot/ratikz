@@ -20,7 +20,8 @@
                 [ystep      #false]
                 [left-color #false]
                 [right-color #false]
-                [min-size   #false])
+                [min-size   #false]
+                [sibling-distance #false])
     (define/public (render)
       (let ([shape-str (safe-format "~a" shape)]
             [draw-str (safe-format "draw=~a" draw)]
@@ -35,10 +36,12 @@
             [leftc-str (safe-format "left color=~a" left-color)]
             [rightc-str (safe-format "right color=~a" right-color)]
             [minsize-str (safe-format "minimum size=~a" min-size)]
+            [sibdist-str (safe-format "sibling distance=~a" sibling-distance)]
             )
         (let ([lst (filter string?
                      (list shape-str draw-str fill-str thick-str arrow-str text-str font-str
-                           step-str xstep-str ystep-str leftc-str rightc-str minsize-str))])
+                           step-str xstep-str ystep-str leftc-str rightc-str minsize-str
+                           sibdist-str))])
           (format "[~a]" (string-join lst ", ")))))))
 
 (define def-style
