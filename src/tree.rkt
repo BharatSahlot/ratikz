@@ -33,20 +33,23 @@
                 [style #false]
                 [text #false]
                 [node-style #false]
-                [children '()])
+                [children '()]
+                [edge-label #false])
     (define/public (render-children level)
       (let ([lst (map (lambda (a)
                         (send a render (+ level 1))) children)])
         (if (empty? lst) ""
-          (string-join lst "\n"))))
+          (string-join lst ""))))
     (define/public (render level)
       (format
-        "\n~achild~a { node~a~a {~a} ~a}"
+        "\n~achild~a { node~a~a {~a} ~a ~a}"
         (make-string level #\tab)
         (if (boolean? style) "" (send style render))
         (if (boolean? node-style) "" (send node-style render))
         (if (boolean? name) "" (format " (~a) "))
         text
-        (render-children (+ level 1))))))
+        (render-children (+ level 1))
+        (if (boolean? edge-label) ""
+          (format "\nedge from parent node {~a}" edge-label))))))
 
 (provide tree-root% tree-node%)
