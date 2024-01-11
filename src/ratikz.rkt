@@ -4,6 +4,7 @@
 (require "./connectors.rkt")
 (require "./point.rkt")
 (require "./style.rkt")
+(require "./tree.rkt")
 
 (define (document #:class class . body)
   (format
@@ -41,4 +42,5 @@
 (provide (all-from-out "./commands.rkt")
          (all-from-out "./connectors.rkt")
          (all-from-out "./point.rkt")
-         (all-from-out "./style.rkt"))
+         (all-from-out "./style.rkt")
+         (all-from-out "./tree.rkt"))

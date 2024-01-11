@@ -17,7 +17,7 @@
                 [left #false]
                 [below #false]
                 [position #false])
-    (define/override (render)
+    (define/public (get-position-string)
       (let ([above-str (if (boolean? above) #false (format "above=of ~a"    (get-field name above)))]
             [right-str (if (boolean? right) #false (format "right=of ~a"    (get-field name right)))]
             [left-str (if (boolean? left) #false (format "left=of ~a"       (get-field name left)))]
@@ -25,12 +25,17 @@
             [position-str (if (boolean? position) #false (format "at ~a"    (send position render)))])
         (let ([lst (filter string? (list above-str right-str left-str below-str))])
           (format
-            "\\node~a (~a) ~a ~a {~a}"
-            (send style render)
-            name
+            "~a ~a"
             (format "[~a]" (string-join lst ", "))
-            (if (boolean? position-str) "" position-str)
-            text))))))
+            (if (boolean? position-str) "" position-str)))))
+    (define/override (render)
+      (let ([pos-string (get-position-string)]) 
+        (format
+          "\\node~a (~a) ~a {~a}"
+          (send style render)
+          name
+          pos-string
+          text)))))
 
 (define mcommand-base%
   (class command-base%
