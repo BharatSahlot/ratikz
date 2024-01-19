@@ -62,6 +62,9 @@
       ['eq? '=]
       [_ error "unknown op"])))
 
+(define count-nodes
+  ())
+
 (define (unparse exp is-root? edge-label level)
   (let ([children
           (cases ast exp
@@ -90,8 +93,8 @@
                             (font "\\tiny")))))))
 
 ;; INFO: this creates a very overlapping ast, tikz does not handle that by itself
-;; (display
-;;   (tikz (unparse (parse '(if (== 8 (if (== 6 (* 2 3)) 3 5)) (* 10 (if (== 6 (* 2 3)) 3 5)) 20)) #t #f)))
-
 (display
-  (tikz (unparse (parse '(if (== 8 4) (* 10 (if (== 6 (* 2 3)) 3 5)) 20)) #t #f 1)))
+  (tikz (unparse (parse '(if (== 8 (if (== 6 (* 2 3)) 3 5)) (* 10 (if (== 6 (* 2 3)) 3 5)) 20)) #t #f 1)))
+
+;; (display
+;;   (tikz (unparse (parse '(if (== 8 4) (* 10 (if (== 6 (* 2 3)) 3 5)) 20)) #t #f 1)))
